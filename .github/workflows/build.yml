@@ -16,14 +16,11 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      
-      # 修正部分：将 with 参数改为多行写法，避免语法错误
       - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
       - uses: docker/build-push-action@v5
         with:
           context: ./search_node
@@ -38,14 +35,11 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      
-      # 修正部分：同上
       - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
       - uses: docker/build-push-action@v5
         with:
           context: ./core_node
