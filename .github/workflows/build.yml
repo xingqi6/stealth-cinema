@@ -1,0 +1,38 @@
+name: Build Phantom Cinema
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-search:
+    runs-on: ubuntu-latest
+    permissions: { contents: read, packages: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with: { registry: ${{ env.REGISTRY }}, username: ${{ github.actor }}, password: ${{ secrets.GITHUB_TOKEN }} }
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./search_node
+          push: true
+          # 伪装镜像名
+          tags: ghcr.io/${{ github.repository_owner }}/search-engine-worker:latest
+
+  build-core:
+    runs-on: ubuntu-latest
+    permissions: { contents: read, packages: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with: { registry: ${{ env.REGISTRY }}, username: ${{ github.actor }}, password: ${{ secrets.GITHUB_TOKEN }} }
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./core_node
+          push: true
+          # 伪装镜像名
+          tags: ghcr.io/${{ github.repository_owner }}/core-system-monitor:latest
